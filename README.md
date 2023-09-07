@@ -2,6 +2,20 @@
 
 Intended to be used for connecting to a set of smart contracts, this is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+It uses the following features:
+
+- Next 13
+- React 18
+- TypeScript
+- Material UI
+- Viem
+- Wagmi
+- ESLint
+- Prettier
+- Commitlint
+- Yarn
+- Husky Git Hooks
+
 ## Getting Started
 
 First, run the development server:
