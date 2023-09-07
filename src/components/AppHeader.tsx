@@ -1,5 +1,7 @@
 'use client'
-import { AppBar, Box, Button, Toolbar, Typography } from '@mui/material'
+import { AppBar, Box, Toolbar, Typography } from '@mui/material'
+
+import ConnectWalletButton from './ConnectWalletButton'
 
 const styles = {
 	wrap: {
@@ -12,13 +14,7 @@ const styles = {
 	},
 }
 
-export interface IAppHeaderProps {}
-
-export default function AppHeader(props: IAppHeaderProps) {
-	const handleConnectWallet = () => {
-		console.log('hello')
-	}
-
+const AppHeader = () => {
 	return (
 		<Box sx={styles.wrap}>
 			<AppBar position="static" elevation={0} sx={styles.appBar}>
@@ -26,11 +22,11 @@ export default function AppHeader(props: IAppHeaderProps) {
 					<Typography variant="h6" sx={styles.toolBar}>
 						LOGO GOES HERE
 					</Typography>
-					<Button variant="contained" color="primary" onClick={handleConnectWallet}>
-						Connect Wallet
-					</Button>
+					<ConnectWalletButton />
 				</Toolbar>
 			</AppBar>
 		</Box>
 	)
 }
+
+export default AppHeader

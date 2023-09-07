@@ -20,6 +20,10 @@ It uses the following features:
 ## Getting Started
 
 1. Install dependencies: `yarn install`
-2. Run development server: `yarn dev`
-3. Open browser: `http://localhost:3000`
-4. Start editing: `app/page.tsx`
+2. Setup environment variables: `cp .env .env.local`
+   1. Update values with appropriate keys
+   2. Or, comment them out in `src/lib/wagmiConfig.ts`
+3. Run development server: `yarn dev`
+4. Open browser: `http://localhost:3000`
+   1. It will hot reload on each file save
+5. Start editing: `src/app/page.tsx`

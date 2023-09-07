@@ -11,9 +11,8 @@ const styles = {
 		height: '72px',
 	},
 }
-export interface IAppFooterProps {}
 
-export default function AppFooter(props: IAppFooterProps) {
+const AppFooter = () => {
 	return (
 		<Box sx={styles.wrap}>
 			<Typography variant="caption">
@@ -26,3 +25,5 @@ export default function AppFooter(props: IAppFooterProps) {
 		</Box>
 	)
 }
+
+export default AppFooter

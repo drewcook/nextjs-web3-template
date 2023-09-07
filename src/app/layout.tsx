@@ -1,3 +1,4 @@
+'use client' // Tradeoff, for the benefit of having <WagmiConfig> in one place and "globally"
 import './globals.css'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -5,11 +6,12 @@ import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
 import { Box, ThemeProvider } from '@mui/material'
-import type { Metadata } from 'next'
+import { WagmiConfig } from 'wagmi'
 
 import AppFooter from '@/components/AppFooter'
 import AppHeader from '@/components/AppHeader'
-import theme from '@/lib/theme'
+import muiTheme from '@/lib/muiTheme'
+import wagmiConfig from '@/lib/wagmiConfig'
 
 const styles = {
 	main: {
@@ -22,23 +24,19 @@ const styles = {
 	},
 }
 
-export const metadata: Metadata = {
-	title: 'Next DApp',
-	description:
-		'A template for building Ethereum-based dApps using Next.js, Material UI, Wagmi/Viem, and WalletConnect.',
-}
-
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
 			<body>
-				<ThemeProvider theme={theme}>
-					<AppHeader />
-					<Box component="main" sx={styles.main}>
-						{children}
-					</Box>
-					<AppFooter />
-				</ThemeProvider>
+				<WagmiConfig config={wagmiConfig}>
+					<ThemeProvider theme={muiTheme}>
+						<AppHeader />
+						<Box component="main" sx={styles.main}>
+							{children}
+						</Box>
+						<AppFooter />
+					</ThemeProvider>
+				</WagmiConfig>
 			</body>
 		</html>
 	)

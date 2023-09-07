@@ -36,6 +36,6 @@ const themeOptions: ThemeOptions = {
 	},
 }
 
-const theme = createTheme(themeOptions)
+const muiTheme = createTheme(themeOptions)
 
-export default theme
+export default muiTheme
