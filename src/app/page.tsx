@@ -1,4 +1,4 @@
-import { Box } from '@mui/material'
+import { Box, Paper, Typography } from '@mui/material'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -7,8 +7,22 @@ export const metadata: Metadata = {
 		'A template for building Ethereum-based dApps using Next.js, Material UI, Wagmi/Viem, and WalletConnect.',
 }
 
+const styles = {
+	paper: {
+		p: 4,
+		textAlign: 'center',
+	},
+}
+
 const DefaultPage = () => {
-	return <Box>I&apos;m a page, edit me</Box>
+	return (
+		<Paper sx={styles.paper}>
+			<Typography variant="h4" gutterBottom>
+				Home Page
+			</Typography>
+			<Typography>Put some info here</Typography>
+		</Paper>
+	)
 }
 
 export default DefaultPage

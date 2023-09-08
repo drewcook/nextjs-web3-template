@@ -1,4 +1,5 @@
 'use client'
+import { grey } from '@mui/material/colors'
 import { createTheme, ThemeOptions } from '@mui/material/styles'
 
 const themeOptions: ThemeOptions = {
@@ -18,7 +19,7 @@ const themeOptions: ThemeOptions = {
 		},
 		background: {
 			default: '#000404',
-			paper: '#242b2b',
+			paper: grey[900],
 		},
 		error: {
 			main: '#fb1870',

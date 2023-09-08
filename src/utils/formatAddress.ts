@@ -5,7 +5,7 @@
  */
 const formatAddress = (address: string | undefined): string => {
 	if (!address) return ''
-	return address.substring(0, 2) + '............' + address.substring(address.length - 4)
+	return address.substring(0, 2) + '..........' + address.substring(address.length - 4)
 }
 
 // Variant, good for displaying longer hashes, like the commitment hash

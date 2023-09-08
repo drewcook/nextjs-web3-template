@@ -5,7 +5,7 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
-import { Box, ThemeProvider } from '@mui/material'
+import { Box, Container, ThemeProvider } from '@mui/material'
 import { WagmiConfig } from 'wagmi'
 
 import AppFooter from '@/components/AppFooter'
@@ -19,7 +19,7 @@ const styles = {
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		p: 6,
+		py: 6,
 		minHeight: 'calc(100vh - calc(64px + 72px))',
 	},
 }
@@ -32,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<ThemeProvider theme={muiTheme}>
 						<AppHeader />
 						<Box component="main" sx={styles.main}>
-							{children}
+							<Container maxWidth="xl">{children}</Container>
 						</Box>
 						<AppFooter />
 					</ThemeProvider>
