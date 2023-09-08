@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from '@mui/material'
+import { Paper, Typography } from '@mui/material'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
