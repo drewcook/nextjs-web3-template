@@ -14,6 +14,7 @@ import {
 	Typography,
 } from '@mui/material'
 import { grey } from '@mui/material/colors'
+import { useWeb3Modal } from '@web3modal/wagmi/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useAccount, useDisconnect, useEnsAvatar, useEnsName } from 'wagmi'
@@ -71,6 +72,7 @@ const AppHeader = () => {
 	const { disconnect } = useDisconnect()
 	const { data: ensName } = useEnsName({ address })
 	const { data: ensAvatar } = useEnsAvatar({ name: ensName })
+	const { open } = useWeb3Modal()
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget)
@@ -84,6 +86,8 @@ const AppHeader = () => {
 	}
 
 	const handleCloseUserMenu = (setting: string) => {
+		if (setting === 'Switch Network') open({ view: 'Networks' })
+		if (setting === 'Switch Wallet') open()
 		if (setting === 'Disconnect') disconnect()
 		setAnchorElUser(null)
 	}
