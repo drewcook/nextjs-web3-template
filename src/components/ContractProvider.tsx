@@ -1,87 +1,121 @@
-import { createContext, useContext, useEffect, useState } from 'react'
-import { getContract } from 'viem'
-import { usePublicClient, useWalletClient } from 'wagmi'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { Abi, Address, getContract, GetContractReturnType, parseEther } from 'viem'
+import { useAccount, usePublicClient, useWalletClient } from 'wagmi'
 
-import { erc20ABI, erc721ABI, erc1155ABI } from '../../abis'
+import { CONTRACTS } from '@/constants'
 
-// TODO: Update this to be an object relating to each contract being used
+// Types
+type TxHash = Address | undefined
+type ContractReadArgs = { address: Address; abi: Abi; functionName: string; args?: unknown[] }
+type ContractWriteArgs = { address: Address; abi: Abi; functionName: string; args: unknown[]; value?: number }
 type ContractContextValues = {
-	erc20: unknown
-	erc721: unknown
-	erc1155: unknown
+	executeContractRead: (args: ContractReadArgs) => Promise<unknown>
+	executeContractWrite: (args: ContractWriteArgs) => Promise<[unknown, TxHash]>
+	txSuccess: boolean
+	txError: string | null
+	resetTxNotifications: () => void
+	// TODO: Add in fields representing each contract being used
+	nft: GetContractReturnType
 }
-
-const initialContextValue: ContractContextValues = {
-	erc20: undefined,
-	erc721: undefined,
-	erc1155: undefined,
-}
-
-const ContractContext = createContext<ContractContextValues>(initialContextValue)
-
 type ContractProviderProps = {
 	children: React.ReactNode
 }
 
+// Create context with initial values
+const ContractContext = createContext<ContractContextValues>({
+	executeContractRead: () => Promise.resolve(undefined),
+	executeContractWrite: () => Promise.resolve([undefined, undefined]),
+	txSuccess: false,
+	txError: null,
+	resetTxNotifications: () => {},
+	nft: {} as GetContractReturnType,
+})
+
 // Context provider component
 export const ContractProvider: React.FC<ContractProviderProps> = ({ children }: ContractProviderProps) => {
-	// Constants
-	const CONTRACT_1_ADDRESS = '0x'
-	const CONTRACT_2_ADDRESS = '0x'
-	const CONTRACT_3_ADDRESS = '0x'
-
 	// State
-	const [contract1, setContract1] = useState(initialContextValue.erc20)
-	const [contract2, setContract2] = useState(initialContextValue.erc721)
-	const [contract3, setContract3] = useState(initialContextValue.erc1155)
+	const [txSuccess, setTxSuccess] = useState<boolean>(false)
+	const [txError, setTxError] = useState<string | null>(null)
+	const [nft, setNft] = useState<GetContractReturnType>({} as GetContractReturnType)
 
 	// Hooks
 	const publicClient = usePublicClient()
-	const { data } = useWalletClient()
+	const { data: walletClient } = useWalletClient()
+	const { address: account } = useAccount()
 
-	// Instantiate the contract instance(s) when a wallet client is detected
+	// Provide a way to reset notification states
+	const resetTxNotifications = () => {
+		setTxSuccess(false)
+		setTxError(null)
+	}
+
+	// Provide contract read helper
+	const executeContractRead = useCallback(
+		async ({ address, abi, functionName, args }: ContractReadArgs): Promise<unknown> => {
+			try {
+				if (functionName === 'balance') return await publicClient.getBalance({ address })
+				else
+					return await publicClient.readContract({
+						address,
+						abi,
+						functionName,
+						args,
+					})
+			} catch (error: any) {
+				throw error
+			}
+		},
+		[publicClient],
+	)
+
+	// Provide contract write helper
+	const executeContractWrite = useCallback(
+		async ({ address, abi, functionName, args, value }: ContractWriteArgs): Promise<[unknown, TxHash]> => {
+			try {
+				const { request, result } = await publicClient.simulateContract({
+					account,
+					address,
+					abi,
+					functionName,
+					args,
+					value: value ? parseEther(`${value}`) : undefined,
+				})
+				const txHash = await walletClient?.writeContract(request)
+				setTxSuccess(true)
+				setTxError(null)
+				return [result, txHash]
+			} catch (error: any) {
+				setTxSuccess(false)
+				setTxError(error.message)
+				throw error
+			}
+		},
+		[publicClient, walletClient, account],
+	)
+
+	// Instantiate the contract instance(s) when a new wallet/public client is detected
 	useEffect(() => {
-		if (data) {
-			// Only initialize on first recognition
-			if (!contract1) {
-				setContract1(
-					getContract({
-						address: CONTRACT_1_ADDRESS,
-						abi: erc20ABI,
-						publicClient,
-						walletClient: data,
-					}),
-				)
-			}
-			if (!contract2) {
-				setContract2(
-					getContract({
-						address: CONTRACT_2_ADDRESS,
-						abi: erc721ABI,
-						publicClient,
-						walletClient: data,
-					}),
-				)
-			}
-			if (!contract3) {
-				setContract3(
-					getContract({
-						address: CONTRACT_3_ADDRESS,
-						abi: erc1155ABI,
-						publicClient,
-						walletClient: data,
-					}),
-				)
-			}
+		if (walletClient && publicClient) {
+			setNft(
+				getContract({
+					address: CONTRACTS.SEPOLIA.NFT_COLLECTION.ADDRESS,
+					abi: CONTRACTS.SEPOLIA.NFT_COLLECTION.ABI,
+					publicClient,
+					walletClient,
+				}),
+			)
 		}
-	}, [data]) /* eslint-disable-line react-hooks/exhaustive-deps */
+	}, [walletClient, publicClient])
 
 	return (
 		<ContractContext.Provider
 			value={{
-				erc20: contract1,
-				erc721: contract2,
-				erc1155: contract3,
+				nft,
+				executeContractRead,
+				executeContractWrite,
+				txSuccess,
+				txError,
+				resetTxNotifications,
 			}}
 		>
 			{children}
