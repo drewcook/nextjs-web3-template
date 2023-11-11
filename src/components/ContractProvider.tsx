@@ -1,4 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import { getContract } from 'viem'
+import { usePublicClient, useWalletClient } from 'wagmi'
+
+import { erc20ABI, erc721ABI, erc1155ABI } from '../../abis'
 
 // TODO: Update this to be an object relating to each contract being used
 type ContractContextValues = {
@@ -21,19 +25,56 @@ type ContractProviderProps = {
 
 // Context provider component
 export const ContractProvider: React.FC<ContractProviderProps> = ({ children }: ContractProviderProps) => {
+	// Constants
+	const CONTRACT_1_ADDRESS = '0x'
+	const CONTRACT_2_ADDRESS = '0x'
+	const CONTRACT_3_ADDRESS = '0x'
+
+	// State
 	const [contract1, setContract1] = useState(initialContextValue.erc20)
 	const [contract2, setContract2] = useState(initialContextValue.erc721)
 	const [contract3, setContract3] = useState(initialContextValue.erc1155)
 
-	// Instantiate the contract instance(s) on mount
+	// Hooks
+	const publicClient = usePublicClient()
+	const { data } = useWalletClient()
+
+	// Instantiate the contract instance(s) when a wallet client is detected
 	useEffect(() => {
-		const contractInstance1 = null
-		const contractInstance2 = null
-		const contractInstance3 = null
-		setContract1(contractInstance1)
-		setContract2(contractInstance2)
-		setContract3(contractInstance3)
-	}, [])
+		if (data) {
+			// Only initialize on first recognition
+			if (!contract1) {
+				setContract1(
+					getContract({
+						address: CONTRACT_1_ADDRESS,
+						abi: erc20ABI,
+						publicClient,
+						walletClient: data,
+					}),
+				)
+			}
+			if (!contract2) {
+				setContract2(
+					getContract({
+						address: CONTRACT_2_ADDRESS,
+						abi: erc721ABI,
+						publicClient,
+						walletClient: data,
+					}),
+				)
+			}
+			if (!contract3) {
+				setContract3(
+					getContract({
+						address: CONTRACT_3_ADDRESS,
+						abi: erc1155ABI,
+						publicClient,
+						walletClient: data,
+					}),
+				)
+			}
+		}
+	}, [data]) /* eslint-disable-line react-hooks/exhaustive-deps */
 
 	return (
 		<ContractContext.Provider

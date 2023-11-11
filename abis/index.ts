@@ -1,5 +1,5 @@
-import { erc20Abi } from './ERC20'
-import { erc721Abi } from './ERC721'
-import { erc1155Abi } from './ERC1155'
+import { erc20ABI, erc721ABI } from 'wagmi'
 
-export { erc20Abi, erc721Abi, erc1155Abi }
+import { erc1155ABI } from './ERC1155'
+
+export { erc20ABI, erc721ABI, erc1155ABI }

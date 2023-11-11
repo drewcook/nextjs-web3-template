@@ -1,6 +1,6 @@
 import { Abi } from 'viem'
 
-export const erc1155Abi = [
+export const erc1155ABI = [
 	{
 		inputs: [
 			{

@@ -11,9 +11,9 @@ const styles = {
 }
 
 const Dashboard: React.FC = () => {
-	const { erc20 } = useContract()
+	const { erc20, erc721, erc1155 } = useContract()
 
-	console.log({ erc20 })
+	console.log({ erc20, erc721, erc1155 })
 
 	return (
 		<>
