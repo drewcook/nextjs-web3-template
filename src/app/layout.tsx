@@ -10,6 +10,7 @@ import { WagmiConfig } from 'wagmi'
 
 import AppFooter from '@/components/AppFooter'
 import AppHeader from '@/components/AppHeader'
+import { ContractProvider } from '@/components/ContractProvider'
 import muiTheme from '@/lib/muiTheme'
 import wagmiConfig from '@/lib/wagmiConfig'
 
@@ -29,13 +30,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body>
 				<WagmiConfig config={wagmiConfig}>
-					<ThemeProvider theme={muiTheme}>
-						<AppHeader />
-						<Box component="main" sx={styles.main}>
-							<Container maxWidth="xl">{children}</Container>
-						</Box>
-						<AppFooter />
-					</ThemeProvider>
+					<ContractProvider>
+						<ThemeProvider theme={muiTheme}>
+							<AppHeader />
+							<Box component="main" sx={styles.main}>
+								<Container maxWidth="xl">{children}</Container>
+							</Box>
+							<AppFooter />
+						</ThemeProvider>
+					</ContractProvider>
 				</WagmiConfig>
 			</body>
 		</html>
