@@ -1,6 +1,6 @@
 # Nextjs Web3 Template
 
-View the [demo app](https://dco-nextjs-web3-template.vercel.app/).
+View the [demo app](https://template.dco.dev/).
 
 This is a template for building a robust frontend application designed to interact with Ethereum-based smart contracts.
 
@@ -40,5 +40,5 @@ This template relies on WalletConnect and an RPC provider to connect to Ethereum
 3. Run development server: `yarn dev`
 4. Open browser: `http://localhost:3000`
    1. It will hot reload on each file save
-5. Start editing: `src/app/page.tsx`
-6. Follow the steps in the ABIs [Readme](./abis/README.md).
+5. Follow the steps this [README](./abis/README.md) to add contract ABI and configurations for deployment addresses
+6. Start editing: `src/app/page.tsx` to update the UI (visit the Dashboard page to mint an example NFT)
