@@ -14,9 +14,9 @@ type ContractDeployments = {
 }
 
 const SEPOLIA: ContractDeployments = {
-	// SimpleNFT: https://sepolia.etherscan.io/address/0x096FbFe07E9e0f56d2Ef77270B1450579711E076
+	// SimpleNFT: https://sepolia.etherscan.io/address/0x1cfD246a218b35e359584979dDBeAD1f567d9C88
 	NFT_COLLECTION: {
-		ADDRESS: getAddress('0x096FbFe07E9e0f56d2Ef77270B1450579711E076', sepolia.id),
+		ADDRESS: getAddress('0x1cfD246a218b35e359584979dDBeAD1f567d9C88', sepolia.id),
 		ABI: simpleNftAbi,
 	},
 }
