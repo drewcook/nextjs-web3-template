@@ -39,3 +39,4 @@ This template relies on WalletConnect and an RPC provider to connect to Ethereum
 4. Open browser: `http://localhost:3000`
    1. It will hot reload on each file save
 5. Start editing: `src/app/page.tsx`
+6. Follow the steps in the ABIs [Readme](./abis/README.md).

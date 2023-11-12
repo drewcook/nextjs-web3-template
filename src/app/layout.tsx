@@ -5,39 +5,30 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
-import { Box, Container, ThemeProvider } from '@mui/material'
+import { ThemeProvider } from '@mui/material'
 import { WagmiConfig } from 'wagmi'
 
-import AppFooter from '@/components/AppFooter'
-import AppHeader from '@/components/AppHeader'
+import { ContractProvider } from '@/components/ContractProvider'
+import PrimaryLayout from '@/components/layouts/PrimaryLayout'
 import muiTheme from '@/lib/muiTheme'
 import wagmiConfig from '@/lib/wagmiConfig'
 
-const styles = {
-	main: {
-		display: 'flex',
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignItems: 'center',
-		py: 6,
-		minHeight: 'calc(100vh - calc(64px + 72px))',
-	},
-}
-
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+// Primarily to hold all context providers
+// For the layout, see '/src/components/layouts/PrimaryLayout.tsx'
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
 	return (
 		<html lang="en">
 			<body>
 				<WagmiConfig config={wagmiConfig}>
-					<ThemeProvider theme={muiTheme}>
-						<AppHeader />
-						<Box component="main" sx={styles.main}>
-							<Container maxWidth="xl">{children}</Container>
-						</Box>
-						<AppFooter />
-					</ThemeProvider>
+					<ContractProvider>
+						<ThemeProvider theme={muiTheme}>
+							<PrimaryLayout>{children}</PrimaryLayout>
+						</ThemeProvider>
+					</ContractProvider>
 				</WagmiConfig>
 			</body>
 		</html>
 	)
 }
+
+export default RootLayout
