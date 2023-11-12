@@ -1,6 +1,7 @@
 'use client'
 import { Button, Grid, Paper, Typography } from '@mui/material'
 import { useWeb3Modal } from '@web3modal/wagmi/react'
+import { useState } from 'react'
 import { useAccount } from 'wagmi'
 
 import { useContract } from '@/components/ContractProvider'
@@ -18,6 +19,10 @@ const styles = {
 }
 
 const Dashboard: React.FC = () => {
+	// State
+	const [nftName, setNftName] = useState<string>('')
+	const [tokenUri, setTokenUri] = useState<string>('')
+
 	// Hooks
 	const { nft, executeContractRead, executeContractWrite } = useContract()
 	const { isConnected } = useAccount()
@@ -43,8 +48,9 @@ const Dashboard: React.FC = () => {
 
 	const handleGetName = async () => {
 		try {
-			const result = await executeContractRead({ address: nft.address, abi: nft.abi, functionName: 'name' })
-			console.log({ result })
+			setNftName('')
+			const result = (await executeContractRead({ address: nft.address, abi: nft.abi, functionName: 'name' })) as string
+			setNftName(result)
 		} catch (e) {
 			console.error(e)
 		}
@@ -52,13 +58,14 @@ const Dashboard: React.FC = () => {
 
 	const handleGetTokenURI = async (tokenId: number) => {
 		try {
-			const result = await executeContractRead({
+			setTokenUri('')
+			const result = (await executeContractRead({
 				address: nft.address,
 				abi: nft.abi,
 				functionName: 'tokenURI',
 				args: [tokenId],
-			})
-			console.log({ result })
+			})) as string
+			setTokenUri(result)
 		} catch (e) {
 			console.error(e)
 		}
@@ -72,7 +79,6 @@ const Dashboard: React.FC = () => {
 						<Typography variant="h4" gutterBottom>
 							Your Dashboard
 						</Typography>
-						<Typography gutterBottom>Put some info here</Typography>
 						<Button onClick={handleMint} variant="outlined" sx={styles.button}>
 							Mint NFT
 						</Button>
@@ -93,7 +99,8 @@ const Dashboard: React.FC = () => {
 						<Typography variant="h4" gutterBottom>
 							More Information
 						</Typography>
-						<Typography>Put some info here</Typography>
+						<Typography gutterBottom>NFT Name: {nftName || 'n/a'}</Typography>
+						<Typography gutterBottom>TokenURI: {tokenUri || 'n/a'}</Typography>
 					</Paper>
 				</Grid>
 			</Grid>
