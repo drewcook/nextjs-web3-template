@@ -1,3 +1,5 @@
+/* TODO: Support both dark & light themes */
+
 :root {
 	/* CSS Vars */
 }
@@ -27,7 +29,6 @@ a {
 	}
 
 	html {
-		/* TODO: set up MUI dark/light theme */
 		color-scheme: dark;
 	}
 }

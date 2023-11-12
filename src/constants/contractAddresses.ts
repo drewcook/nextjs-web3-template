@@ -8,11 +8,11 @@ export type ContractABIPair = {
 	ABI: Abi
 }
 
+// TODO: Add in contract deployments and their ABIs for each network supported
 type ContractDeployments = {
 	NFT_COLLECTION: ContractABIPair
 }
 
-// TODO: Add in contract deployments and their ABIs for each network supported
 const SEPOLIA: ContractDeployments = {
 	// SimpleNFT: https://sepolia.etherscan.io/address/0x096FbFe07E9e0f56d2Ef77270B1450579711E076
 	NFT_COLLECTION: {
