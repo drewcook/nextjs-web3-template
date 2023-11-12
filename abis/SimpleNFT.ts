@@ -1,6 +1,6 @@
 import { Abi } from 'viem'
 
-export const simpleNftAbi = [
+export const simpleNftABI = [
 	{
 		inputs: [],
 		stateMutability: 'nonpayable',
