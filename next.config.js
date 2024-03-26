@@ -10,7 +10,7 @@ const nextConfig = {
 				headers: [
 					{
 						key: 'Content-Security-Policy',
-						value: `frame-ancestors 'verify.walletconnect.org' 'verify.walletconnect.com';`,
+						value: `frame-ancestors verify.walletconnect.org verify.walletconnect.com;`,
 					},
 				],
 			},
